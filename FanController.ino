@@ -1,4 +1,3 @@
-
 int outputPin;
 bool fanStatus;
 
