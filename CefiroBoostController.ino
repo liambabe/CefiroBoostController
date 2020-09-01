@@ -1,7 +1,11 @@
-//Script to read a 3 bar bosch map sensor and print reading in bar to serial
+/*//Script to read a 3 bar bosch map sensor and print reading in bar to serial
 
-int MapSensorPin = A0;    
-int AirTempSensorPin = A1;
+//eletonic outputs
+const int FanControlPin = 7;
+
+//Sensor inputs
+const int MapSensorPin = A0;    
+const int AirTempSensorPin = A1;
 
 int MapSensorValue = 0; 
 int AirTempSensorValue = 0; 
@@ -13,6 +17,7 @@ float MapReading = 0.0f;
 void setup() {
   pinMode(MapSensorPin, INPUT);
   pinMode(AirTempSensorPin, INPUT);  
+  pinMode(FanControlPin, OUTPUT);
   Serial.begin(9600);
 }
 
@@ -32,4 +37,4 @@ void loop() {
   //Serial.println("Air Temp value: " + AirTempSensorValue);
   Serial.println("==========================");
   delay(1000);
-}
+}*/
