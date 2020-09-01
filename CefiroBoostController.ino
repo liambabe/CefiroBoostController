@@ -1,4 +1,4 @@
-//Script to read a 3 bar bosch map sensor and print reading in bar to serial
+/*//Script to read a 3 bar bosch map sensor and print reading in bar to serial
 
 int MapSensorPin = A0;    
 int AirTempSensorPin = A1;
@@ -32,4 +32,4 @@ void loop() {
   //Serial.println("Air Temp value: " + AirTempSensorValue);
   Serial.println("==========================");
   delay(1000);
-}
+}*/
