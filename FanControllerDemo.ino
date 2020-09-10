@@ -1,10 +1,14 @@
 #include <SoftwareSerial.h>
 
+#include "FanController.h"
+
 SoftwareSerial bluetoothSerialCon(2,3);
 
-int FanPin = 13;
+int FanPin = 12;
 char blueToothVal; //value sent over via bluetooth
-    
+
+FanController fanController(FanPin);   
+
 void setup() {
 
   pinMode(FanPin, OUTPUT);
@@ -19,9 +23,9 @@ void loop() {
   }
 
   if (blueToothVal == 'O') {
-    digitalWrite(FanPin, HIGH);
+    fanController.TurnOnFan();
   } else if (blueToothVal == 'F') {
-    digitalWrite(FanPin, LOW);             
+    fanController.TurnOffFan();         
   }
   
   delay(1000);
