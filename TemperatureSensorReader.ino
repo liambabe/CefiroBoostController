@@ -1,4 +1,4 @@
-//values for resistance calculation
+/*//values for resistance calculation
 float INPUTVOLTAGE;
 float RESISTANCE;
 
@@ -25,4 +25,4 @@ float calculateTemp(float resistance) {
 
     def kelvinToCelcius(float temp) {
         return temp-273.15;
-}
+}*/
