@@ -6,16 +6,16 @@
 class TempSensorReader
 {
     public:
-        TempSensorReader(int sensorpin);
+        TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c);
         float GetTemp();
     private:
-        float ReadResistance();
+        float ReadPin();
         float KelvinToCelcius(float temp);
         float CalculateTemp(float resistance);
         float CalculateResistance(float measuredVoltage);
         int sensorPin;
         float inputVoltage;
-        float knownResistance;
+        float seriesResistance;
         float A;
         float B;
         float C;

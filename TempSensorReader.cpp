@@ -1,17 +1,27 @@
 #include "TempSensorReader.h"
 
-TempSensorReader::TempSensorReader(int sensorpin)
+TempSensorReader::TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c)
 {
     sensorPin = sensorpin;
+    seriesResistance = seriesresistance;
+
+    A = a;
+    B = b;
+    C = c;
 
     inputVoltage = 1023.0;
 }
 
 float TempSensorReader::GetTemp() {
+    float temp;
     
+    temp = ReadPin();
+    temp = CalculateResistance(temp);
+    temp = CalculateTemp(temp);
+    return KelvinToCelcius(temp);
 }
 
-float TempSensorReader::ReadResistance() {
+float TempSensorReader::ReadPin() {
     float reading = analogRead(sensorPin);
     return reading;
 }
@@ -20,11 +30,10 @@ float TempSensorReader::KelvinToCelcius(float temp) {
     return temp-273.15;
 }
 
-float TempSensorReader::CalculateTemp(float resistance) {
-    //return 1.0/((A)+(B*log(resistance))+(self.C*power(log(resistance),3)));
-    logR = log(R2);
-    T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));}
+float TempSensorReader::CalculateTemp(float resistanceReading) {
+    return (1.0 / (A + B*log(resistanceReading) + C*log(resistanceReading)*log(resistanceReading)*log(resistanceReading)));
+}
 
 float TempSensorReader::CalculateResistance(float measuredVoltage) {
-    return knownResistance*((inputVoltage/measuredVoltage)-1);
+    return seriesResistance*((inputVoltage/measuredVoltage)-1);
 }
