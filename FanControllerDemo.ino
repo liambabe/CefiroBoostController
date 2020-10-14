@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
 
 #include "FanController.h"
+#include "TempSensorReader.h"
 
 SoftwareSerial bluetoothSerialCon(2,3);
 
