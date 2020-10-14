@@ -5,7 +5,7 @@
 
 SoftwareSerial bluetoothSerialCon(2,3);
 
-int FanPin = 12;
+int FanPin = 13;
 char blueToothVal; //value sent over via bluetooth
 
 FanController fanController(FanPin);   
@@ -28,6 +28,8 @@ void loop() {
   } else if (blueToothVal == 'F') {
     fanController.TurnOffFan();         
   }
+
+  bluetoothSerialCon.write("2#");
   
   delay(1000);
 
