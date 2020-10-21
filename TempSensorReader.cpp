@@ -35,5 +35,6 @@ float TempSensorReader::CalculateTemp(float resistanceReading) {
 }
 
 float TempSensorReader::CalculateResistance(float measuredVoltage) {
-    return seriesResistance*((inputVoltage/measuredVoltage)-1);
+    float reading = (inputVoltage / measuredVoltage)  - 1;
+    return seriesResistance / reading;
 }

@@ -1,40 +1,67 @@
-/*//Script to read a 3 bar bosch map sensor and print reading in bar to serial
+#include <SoftwareSerial.h>
+#include <math.h>
 
-//eletonic outputs
-const int FanControlPin = 7;
+#include "FanController.h"
+#include "TempSensorReader.h"
+#include "MapSensorReader.h"
 
-//Sensor inputs
-const int MapSensorPin = A0;    
-const int AirTempSensorPin = A1;
+SoftwareSerial bluetoothSerialCon(2,3);
 
-int MapSensorValue = 0; 
-int AirTempSensorValue = 0; 
+int FanPin = 13;
+int MapPin = A0;
+int AirTempPin = A1;
 
-float MapSensorVoltage = 0.0f;
+float mapReading = 0.0f;
+float intakeTempReading = 0.0f;
 
-float MapReading = 0.0f;
-    
+char blueToothVal; //value sent over via bluetooth
+
+FanController fanController(FanPin);
+
+struct TMapSensor {
+  MapSensorReader mapSensorReader;
+  TempSensorReader airIntakeSensorReader;
+  TMapSensor() : mapSensorReader(MapPin), airIntakeSensorReader(AirTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07) {}
+} tMapSensor;
+
 void setup() {
-  pinMode(MapSensorPin, INPUT);
-  pinMode(AirTempSensorPin, INPUT);  
-  pinMode(FanControlPin, OUTPUT);
-  Serial.begin(9600);
+
+  pinMode(FanPin, OUTPUT);
+  pinMode(MapPin, INPUT);
+  pinMode(AirTempPin, INPUT);
+
+  bluetoothSerialCon.begin(9600);
 }
 
 void loop() {
+
+  mapReading = tMapSensor.mapSensorReader.GetMapReading();
+  intakeTempReading = tMapSensor.airIntakeSensorReader.GetTemp();
+
+  if (bluetoothSerialCon.available()) { //check if data avaliable
+    blueToothVal = bluetoothSerialCon.read(); 
+  }
+
+  if (blueToothVal == 'O') {
+    fanController.TurnOnFan();
+  } else if (blueToothVal == 'F') {
+    fanController.TurnOffFan();         
+  }
+
+  char SensorReadings[12];
+  char MapCharReading[6];
+  char airCharReading[6];
   
-  MapSensorValue = analogRead(MapSensorPin);
-  AirTempSensorValue = analogRead(AirTempSensorPin);
+  dtostrf(mapReading, 4, 2, MapCharReading);
+  dtostrf(intakeTempReading, 5, 2, airCharReading);
 
-  MapSensorVoltage = MapSensorValue * (5.0 / 1023.0);
-
-  MapReading = 65.5f*MapSensorVoltage + 0.5;
-
-  MapReading = MapReading/100; //convert to bar
-
-  Serial.print("Map value: ");
-  Serial.println(MapReading);
-  //Serial.println("Air Temp value: " + AirTempSensorValue);
-  Serial.println("==========================");
+  strcpy(SensorReadings, MapCharReading);
+  strcat(SensorReadings, ",");
+  strcat(SensorReadings, airCharReading);
+  strcat(SensorReadings, "#");
+  
+  bluetoothSerialCon.write("80.4,24.5,1.10,on#");
+  
   delay(1000);
-}*/
+
+}
