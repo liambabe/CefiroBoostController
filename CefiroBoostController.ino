@@ -19,7 +19,7 @@ float coolantTempReading = 0.0f;
 char blueToothVal; //value sent over via bluetooth
 
 FanController fanController(FanPin);
-TempSensorReader CoolantTempSensorReader(CoolantTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07);
+TempSensorReader CoolantTempSensorReader(CoolantTempPin, 300, 1.229468634e-03, 2.731077121-04, 0.9228522666-07);
 
 struct TMapSensor {
   MapSensorReader mapSensorReader;
