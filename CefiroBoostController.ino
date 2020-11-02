@@ -19,12 +19,12 @@ float coolantTempReading = 0.0f;
 char blueToothVal; //value sent over via bluetooth
 
 FanController fanController(FanPin);
-TempSensorReader CoolantTempSensorReader(CoolantTempPin, 300, 1.229468634e-03, 2.731077121-04, 0.9228522666-07);
+TempSensorReader CoolantTempSensorReader(CoolantTempPin, 300, 1.170050316e-03, 2.792152116e-04, 0.5816839769e-07, "down");
 
 struct TMapSensor {
   MapSensorReader mapSensorReader;
   TempSensorReader airIntakeSensorReader;
-  TMapSensor() : mapSensorReader(MapPin), airIntakeSensorReader(AirTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07) {}
+  TMapSensor() : mapSensorReader(MapPin), airIntakeSensorReader(AirTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07, "up") {}
 } tMapSensor;
 
 void setup() {
@@ -37,30 +37,9 @@ void setup() {
   bluetoothSerialCon.begin(9600);
 }
 
-void loop() {
+void mergeData(char* mergedData) {
 
-  mapReading = tMapSensor.mapSensorReader.GetMapReading();
-  intakeTempReading = tMapSensor.airIntakeSensorReader.GetTemp();
-
-  if (bluetoothSerialCon.available()) { //check if data avaliable
-    blueToothVal = bluetoothSerialCon.read(); 
-  }
-
-  if (blueToothVal == 'O') {
-    fanController.TurnOnFan();
-  } else if (blueToothVal == 'F') {
-    fanController.TurnOffFan();         
-  }
-  
-  bluetoothSerialCon.write(mergeData());
-  
-  delay(1000);
-
-}
-
-char[] mergeData() {
-
-  char SensorReadings[18];
+  char SensorReadings[24];
   char coolantCharReading[6];
   char MapCharReading[6];
   char airCharReading[6];
@@ -74,8 +53,37 @@ char[] mergeData() {
   strcat(SensorReadings, MapCharReading);
   strcat(SensorReadings, ",");
   strcat(SensorReadings, airCharReading);
+  strcat(SensorReadings, ",");
+  strcat(SensorReadings, "off");
   strcat(SensorReadings, "#");
 
-  return "80.4,24.5,1.10,on#";
+  for (int i = 0; i < 24; i++) {
+    mergedData[i] = SensorReadings[i];
+  }
+
+}
+
+void loop() {
+
+  mapReading = tMapSensor.mapSensorReader.GetMapReading();
+  intakeTempReading = tMapSensor.airIntakeSensorReader.GetTemp();
+  coolantTempReading = CoolantTempSensorReader.GetTemp();
+
+  if (bluetoothSerialCon.available()) { //check if data avaliable
+    blueToothVal = bluetoothSerialCon.read(); 
+  }
+
+  if (blueToothVal == 'O') {
+    fanController.TurnOnFan();
+  } else if (blueToothVal == 'F') {
+    fanController.TurnOffFan();         
+  }
+
+  char dataStr[24];
+  mergeData(dataStr);
+  
+  bluetoothSerialCon.write(dataStr);
+  
+  delay(1000);
 
 }

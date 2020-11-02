@@ -6,7 +6,7 @@
 class TempSensorReader
 {
     public:
-        TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c);
+        TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c, char* resistorposition);
         float GetTemp();
     private:
         float ReadPin();
@@ -19,6 +19,7 @@ class TempSensorReader
         float A;
         float B;
         float C;
+        char ResistorPosition[4];
 };
 
 #endif

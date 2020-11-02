@@ -1,9 +1,10 @@
 #include "TempSensorReader.h"
 
-TempSensorReader::TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c)
+TempSensorReader::TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c, char* resistorposition)
 {
     sensorPin = sensorpin;
     seriesResistance = seriesresistance;
+    strcpy(ResistorPosition, resistorposition);
 
     A = a;
     B = b;
@@ -35,6 +36,15 @@ float TempSensorReader::CalculateTemp(float resistanceReading) {
 }
 
 float TempSensorReader::CalculateResistance(float measuredVoltage) {
-    float reading = (inputVoltage / measuredVoltage)  - 1;
-    return seriesResistance / reading;
+  
+    float reading;
+    reading = (inputVoltage / measuredVoltage)  - 1;
+    
+    if (strcmp(ResistorPosition, "up") == 0) {
+      reading = seriesResistance / reading;
+    } else if (strcmp(ResistorPosition, "down") == 0) {
+      reading = seriesResistance * reading;
+    }
+    
+    return reading;
 }
