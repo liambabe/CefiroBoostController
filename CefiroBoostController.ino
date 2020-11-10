@@ -4,13 +4,16 @@
 #include "FanController.h"
 #include "TempSensorReader.h"
 #include "MapSensorReader.h"
+#include "ThrottlePositionReader.h"
+
 
 SoftwareSerial bluetoothSerialCon(2,3);
 
-int FanPin = 13;
-int MapPin = A0;
-int AirTempPin = A1;
-int CoolantTempPin = A2;
+const int FanPin = 13;
+const int MapPin = A0;
+const int AirTempPin = A1;
+const int CoolantTempPin = A2;
+const int ThrottlePositionPin = A3;
 
 float mapReading = 0.0f;
 float intakeTempReading = 0.0f;
@@ -20,6 +23,7 @@ char blueToothVal; //value sent over via bluetooth
 
 FanController fanController(FanPin);
 TempSensorReader CoolantTempSensorReader(CoolantTempPin, 300, 1.170050316e-03, 2.792152116e-04, 0.5816839769e-07, "down");
+ThrottlePositionReader throttlePositionReader(ThrottlePositionPin);
 
 struct TMapSensor {
   MapSensorReader mapSensorReader;
@@ -35,12 +39,13 @@ void setup() {
   pinMode(CoolantTempPin, INPUT);
 
   bluetoothSerialCon.begin(9600);
+  Serial.begin(9600);
 }
 
 void mergeData(char* mergedData) {
 
-  char SensorReadings[24];
-  char coolantCharReading[6];
+  char SensorReadings[30];
+  char coolantCharReading[8];
   char MapCharReading[6];
   char airCharReading[6];
 
@@ -73,13 +78,7 @@ void loop() {
     blueToothVal = bluetoothSerialCon.read(); 
   }
 
-  if (blueToothVal == 'O') {
-    fanController.TurnOnFan();
-  } else if (blueToothVal == 'F') {
-    fanController.TurnOffFan();         
-  }
-
-  char dataStr[24];
+  char dataStr[30];
   mergeData(dataStr);
   
   bluetoothSerialCon.write(dataStr);
