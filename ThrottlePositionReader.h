@@ -8,6 +8,7 @@ class ThrottlePositionReader
     public:
         ThrottlePositionReader(int sensorpin);
         float GetPosition();
+        float GetThrottleData();
     private:
         float ReadPin();
         int sensorPin;
