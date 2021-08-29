@@ -4,6 +4,7 @@
 #include "FanController.h"
 #include "TempSensorReader.h"
 #include "MapSensorReader.h"
+#include "test/CoolantTempSensorDataGenerator.h" 
 
 SoftwareSerial bluetoothSerialCon(2,3);
 
@@ -41,19 +42,19 @@ void mergeData(char* mergedData) {
 
   char SensorReadings[24];
   char coolantCharReading[6];
-  char MapCharReading[6];
-  char airCharReading[6];
+  //char MapCharReading[6];
+  //char airCharReading[6];
 
-  dtostrf(coolantTempReading, 5, 2, coolantCharReading);
-  dtostrf(mapReading, 4, 2, MapCharReading);
-  dtostrf(intakeTempReading, 5, 2, airCharReading);
+  //dtostrf(coolantTempReading, 5, 2, coolantCharReading);
+  //dtostrf(mapReading, 4, 2, MapCharReading);
+  //dtostrf(intakeTempReading, 5, 2, airCharReading);
 
   strcpy(SensorReadings, coolantCharReading);
   strcat(SensorReadings, ",");
-  strcat(SensorReadings, MapCharReading);
-  strcat(SensorReadings, ",");
-  strcat(SensorReadings, airCharReading);
-  strcat(SensorReadings, ",");
+  //strcat(SensorReadings, MapCharReading);
+  //strcat(SensorReadings, ",");
+  //strcat(SensorReadings, airCharReading);
+  //strcat(SensorReadings, ",");
   strcat(SensorReadings, "off");
   strcat(SensorReadings, "#");
 
@@ -65,18 +66,12 @@ void mergeData(char* mergedData) {
 
 void loop() {
 
-  mapReading = tMapSensor.mapSensorReader.GetMapReading();
-  intakeTempReading = tMapSensor.airIntakeSensorReader.GetTemp();
+  //mapReading = tMapSensor.mapSensorReader.GetMapReading();
+  //intakeTempReading = tMapSensor.airIntakeSensorReader.GetTemp();
   coolantTempReading = CoolantTempSensorReader.GetTemp();
 
   if (bluetoothSerialCon.available()) { //check if data avaliable
     blueToothVal = bluetoothSerialCon.read(); 
-  }
-
-  if (blueToothVal == 'O') {
-    fanController.TurnOnFan();
-  } else if (blueToothVal == 'F') {
-    fanController.TurnOffFan();         
   }
 
   char dataStr[24];

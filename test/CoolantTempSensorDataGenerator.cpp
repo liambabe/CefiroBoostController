@@ -18,3 +18,7 @@ CoolantTempSensorDataGenerator::CoolantTempSensorDataGenerator(int Mode) {
 float CoolantTempSensorDataGenerator::GetTemp() {
 	return currentTemp;
 }
+
+void CoolantTempSensorDataGenerator::updateTemp() {
+	
+}

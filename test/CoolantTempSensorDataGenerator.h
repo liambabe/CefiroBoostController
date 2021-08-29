@@ -10,7 +10,7 @@ class CoolantTempSensorDataGenerator
         float GetTemp();
     private:
         float currentTemp;
-        void updateTemp;
+        void updateTemp();
 };
 
 #endif
