@@ -2,8 +2,9 @@
 #define CoolantTempSensorDataGenerator_h
 
 #include "Arduino.h"
+#include "../interfaces/SensorReader.h"
 
-class CoolantTempSensorDataGenerator
+class CoolantTempSensorDataGenerator: public SensorReader
 {
     public:
         CoolantTempSensorDataGenerator(int Mode);

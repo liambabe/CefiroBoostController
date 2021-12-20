@@ -5,7 +5,7 @@
 #include <Arduino.h>
 
 #include "FanController.h"
-#include "TempSensorReader.h"
+#include "src/sensors/TempSensorReader.h"
 #include "MapSensorReader.h"
 #include "src/test/CoolantTempSensorDataGenerator.h" 
 
@@ -18,7 +18,7 @@
 #define BLUEFRUIT_UART_RTS_PIN         8   // Optional, set to -1 if unused
 #define BLUEFRUIT_UART_MODE_PIN        -1    // Set to -1 if unused
 
-
+#define DEBUG_MODE                     true
 
 SoftwareSerial bluefruitSS = SoftwareSerial(BLUEFRUIT_SWUART_TXD_PIN, BLUEFRUIT_SWUART_RXD_PIN);
 
@@ -34,7 +34,7 @@ float mapReading = 0.0f;
 float intakeTempReading = 0.0f;
 float coolantTempReading = 0.0f;
 
-CoolantTempSensorDataGenerator coolantTempSensorDataGenerator(0);
+SensorReader *coolantTempSensorDataGenerator = new CoolantTempSensorDataGenerator(0);
 
 //#define BLUEFRUIT_HWSERIAL_NAME           Serial1
 
@@ -99,7 +99,7 @@ void mergeData(char* mergedData) {
 
 void loop() {
 
-  coolantTempReading = coolantTempSensorDataGenerator.GetTemp();
+  coolantTempReading = coolantTempSensorDataGenerator->GetTemp();
   char dataStr[24];
   mergeData(dataStr);
   ble.println(dataStr);    
