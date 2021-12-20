@@ -2,7 +2,7 @@
 #define Main_h
 
 #include "Arduino.h"
-
+#include "Adafruit_BluefruitLE_UART.h"
 
 #include "interfaces/SensorReader.h"
 #include "sensors/TempSensorReader.h"
@@ -11,11 +11,17 @@
 class Main
 {
     public:
-        Main(bool DEBUG_MODE, int CoolantTempPin);
+        Main(Adafruit_BluefruitLE_UART* ble, bool debugMode, int coolantTempPin);
         SensorReader *coolantTempSensorReader;
+        void tick();
     private:
         void InitializeDebug();
-        void InitializeProd(int CoolantTempPin);
+        void InitializeProd(int coolantTempPin);
+        void mergeData(char* mergedData);
+        float mapReading;
+        float intakeTempReading;
+        float coolantTempReading;
+        Adafruit_BluefruitLE_UART* bluetoothCommunicator;
 };
 
 #endif
