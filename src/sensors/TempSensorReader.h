@@ -2,12 +2,13 @@
 #define TempSensorReader_h
 
 #include "Arduino.h"
+#include "../interfaces/SensorReader.h"
 
-class TempSensorReader
+class TempSensorReader: public SensorReader
 {
     public:
         TempSensorReader(int sensorpin, float seriesresistance, float a, float b, float c, char* resistorposition);
-        float GetTemp();
+        float GetValue();
     private:
         float ReadPin();
         float KelvinToCelcius(float temp);

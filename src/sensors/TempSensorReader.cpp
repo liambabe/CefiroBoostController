@@ -13,7 +13,7 @@ TempSensorReader::TempSensorReader(int sensorpin, float seriesresistance, float 
     inputVoltage = 1023.0;
 }
 
-float TempSensorReader::GetTemp() {
+float TempSensorReader::GetValue() {
     float temp;
     
     temp = ReadPin();
