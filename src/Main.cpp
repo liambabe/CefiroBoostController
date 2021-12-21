@@ -1,12 +1,16 @@
 #include "Main.h"
 
-Main::Main(Adafruit_BluefruitLE_UART* ble, bool debugMode, int coolantTempPin)
+Main::Main(Adafruit_BluefruitLE_UART* ble, bool debugMode, int coolantTempPin, int FanPin, int MapPin, int AirTempPin)
 {
 	if (debugMode == 1) {
 		InitializeDebug();
 	} else {
 		InitializeProd(coolantTempPin);
 	}
+
+  fanController = new FanController(FanPin);
+  tMapSensor->mapSensorReader = new MapSensorReader(MapPin);
+  tMapSensor->airIntakeSensorReader = new TempSensorReader(AirTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07, "up");
 
   bluetoothCommunicator = ble;
 
@@ -26,7 +30,7 @@ void Main::InitializeProd(int coolantTempPin) {
 void Main::tick() {
   char dataStr[24];
 
-  coolantTempReading = coolantTempSensorReader->GetTemp();
+  coolantTempReading = coolantTempSensorReader->GetValue();
 
   mergeData(dataStr);
   bluetoothCommunicator->println(dataStr);    

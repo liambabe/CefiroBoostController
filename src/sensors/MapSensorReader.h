@@ -3,11 +3,13 @@
 
 #include "Arduino.h"
 
-class MapSensorReader
+#include "../interfaces/SensorReader.h"
+
+class MapSensorReader: public SensorReader
 {
     public:
         MapSensorReader(int sensorpin);
-        float GetMapReading();
+        float GetValue();
     private:
         float ReadPin();
         float CalculateVoltage(float mapSensorValue);

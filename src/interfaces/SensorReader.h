@@ -4,7 +4,7 @@
 class SensorReader
 {
     public:
-        virtual float GetTemp() = 0;
+        virtual float GetValue() = 0;
 };
 
 #endif

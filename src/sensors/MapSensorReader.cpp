@@ -6,7 +6,7 @@ MapSensorReader::MapSensorReader(int sensorpin)
 }
 
 //returns map sensor value in bar
-float MapSensorReader::GetMapReading() {
+float MapSensorReader::GetValue() {
     float boost;
     
     boost = ReadPin();

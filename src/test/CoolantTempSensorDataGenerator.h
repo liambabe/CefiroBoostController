@@ -8,7 +8,7 @@ class CoolantTempSensorDataGenerator: public SensorReader
 {
     public:
         CoolantTempSensorDataGenerator(int Mode);
-        float GetTemp();
+        float GetValue();
     private:
         float currentTemp;
         void updateTemp();

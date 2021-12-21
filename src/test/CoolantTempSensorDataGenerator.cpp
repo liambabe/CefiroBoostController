@@ -15,7 +15,7 @@ CoolantTempSensorDataGenerator::CoolantTempSensorDataGenerator(int Mode) {
 	}
 }
 
-float CoolantTempSensorDataGenerator::GetTemp() {
+float CoolantTempSensorDataGenerator::GetValue() {
 	return currentTemp;
 }
 
