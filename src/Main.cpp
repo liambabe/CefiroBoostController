@@ -5,12 +5,8 @@ Main::Main(Adafruit_BluefruitLE_UART* ble, bool debugMode, int coolantTempPin, i
 	if (debugMode == 1) {
 		InitializeDebug();
 	} else {
-		InitializeProd(coolantTempPin);
+		InitializeProd(coolantTempPin, FanPin, MapPin, AirTempPin);
 	}
-
-  fanController = new FanController(FanPin);
-  tMapSensor->mapSensorReader = new MapSensorReader(MapPin);
-  tMapSensor->airIntakeSensorReader = new TempSensorReader(AirTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07, "up");
 
   bluetoothCommunicator = ble;
 
@@ -20,11 +16,14 @@ Main::Main(Adafruit_BluefruitLE_UART* ble, bool debugMode, int coolantTempPin, i
 }
 
 void Main::InitializeDebug() {
-  coolantTempSensorReader = new CoolantTempSensorDataGenerator(0);
+  coolantTempSensorReader = new CoolantTempSensorMock(0);
 }
 
-void Main::InitializeProd(int coolantTempPin) {
+void Main::InitializeProd(int coolantTempPin, int FanPin, int MapPin, int AirTempPin) {
   coolantTempSensorReader = new TempSensorReader(coolantTempPin, 300, 1.170050316e-03, 2.792152116e-04, 0.5816839769e-07, "down");
+  fanController = new FanController(FanPin);
+  tMapSensor->mapSensorReader = new MapSensorReader(MapPin);
+  tMapSensor->airIntakeSensorReader = new TempSensorReader(AirTempPin, 1000, 1.247757853e-03, 2.698625133e-04, 1.073910146e-07, "up");
 }
 
 void Main::tick() {

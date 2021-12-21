@@ -9,7 +9,8 @@
 #include "interfaces/SensorReader.h"
 #include "sensors/TempSensorReader.h"
 #include "sensors/MapSensorReader.h"
-#include "test/CoolantTempSensorDataGenerator.h"
+
+#include "test/CoolantTempSensorMock.h"
 
 class Main
 {
@@ -27,7 +28,7 @@ class Main
         TMapSensor *tMapSensor;
     private:
         void InitializeDebug();
-        void InitializeProd(int coolantTempPin);
+        void InitializeProd(int coolantTempPin, int FanPin, int MapPin, int AirTempPin);
         void mergeData(char* mergedData);
         float mapReading;
         float intakeTempReading;

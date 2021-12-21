@@ -1,6 +1,6 @@
-#include "CoolantTempSensorDataGenerator.h"
+#include "CoolantTempSensorMock.h"
 
-CoolantTempSensorDataGenerator::CoolantTempSensorDataGenerator(int Mode) {
+CoolantTempSensorMock::CoolantTempSensorMock(int Mode) {
 	if (Mode == 0) { 
 		//start from room temp ~20C
 		currentTemp = 20.0f;
@@ -15,10 +15,10 @@ CoolantTempSensorDataGenerator::CoolantTempSensorDataGenerator(int Mode) {
 	}
 }
 
-float CoolantTempSensorDataGenerator::GetValue() {
+float CoolantTempSensorMock::GetValue() {
 	return currentTemp;
 }
 
-void CoolantTempSensorDataGenerator::updateTemp() {
+void CoolantTempSensorMock::updateTemp() {
 	
 }
